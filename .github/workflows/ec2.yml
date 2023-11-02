@@ -35,8 +35,7 @@ jobs:
             cd ~/reads_productions
           fi
           cd ~/reads_productions/$REPO_NAME
-          eval \"\$(ssh-agent -s)\"
-          GIT_SSH_COMMAND='ssh -i /home/ubuntu/.ssh/github' git pull origin
+          git pull origin
           docker build -t $APP_NAME .
           docker run -d --name=$APP_NAME $APP_NAME
           "
