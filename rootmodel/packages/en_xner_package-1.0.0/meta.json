@@ -1,0 +1,54 @@
+{
+  "lang":"en",
+  "name":"xner_package",
+  "version":"1.0.0",
+  "description":"",
+  "author":"",
+  "email":"",
+  "url":"",
+  "license":"",
+  "spacy_version":">=3.3.0,<3.4.0",
+  "spacy_git_version":"Unknown",
+  "vectors":{
+    "width":0,
+    "vectors":0,
+    "keys":0,
+    "name":null
+  },
+  "labels":{
+    "tok2vec":[
+
+    ],
+    "ner":[
+      "GENE"
+    ]
+  },
+  "pipeline":[
+    "tok2vec",
+    "ner"
+  ],
+  "components":[
+    "tok2vec",
+    "ner"
+  ],
+  "disabled":[
+
+  ],
+  "performance":{
+    "ents_f":0.9956347986,
+    "ents_p":0.998273949,
+    "ents_r":0.9930095659,
+    "ents_per_type":{
+      "GENE":{
+        "p":0.998273949,
+        "r":0.9930095659,
+        "f":0.9956347986
+      }
+    },
+    "tok2vec_loss":32.5610313731,
+    "ner_loss":11.1920062634
+  },
+  "requirements":[
+
+  ]
+}

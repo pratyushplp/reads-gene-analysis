@@ -1,0 +1,3 @@
+[spacy_models]
+en_xner_package = en_xner_package
+
