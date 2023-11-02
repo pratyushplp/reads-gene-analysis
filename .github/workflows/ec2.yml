@@ -1,0 +1,42 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - 'main'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to EC2
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+          SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+          APP_NAME: 'reads-gene-analysis'
+        run: |
+          echo "$SSH_KEY" > private_key && chmod 600 private_key
+          ssh -T -o StrictHostKeyChecking=no -i private_key ec2-user@ec2-18-226-133-119.us-east-2.compute.amazonaws.com "
+          echo "Repository Name: $APP_NAME"
+
+          # Check if the container exists before stopping and removing it
+          if docker ps -a --format '{{.Names}}' | grep -q "^$APP_NAME$"; then
+            docker stop $APP_NAME
+            docker rm $APP_NAME
+          else
+            echo "Container $APP_NAME does not exist, skipping removal."
+            cd ~/reads_productions
+          fi
+          cd ~/reads_productions/$REPO_NAME
+          eval \"\$(ssh-agent -s)\"
+          GIT_SSH_COMMAND='ssh -i /home/ubuntu/.ssh/github' git pull origin
+          docker build -t $APP_NAME .
+          docker run -d --name=$APP_NAME $APP_NAME
+          "
